@@ -1,0 +1,155 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+      "shouldTranslate" : false
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "🗺️ All" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🗺️ Todos"
+          }
+        }
+      }
+    },
+    "Connection Error" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error de Conexión"
+          }
+        }
+      }
+    },
+    "Explore" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Explorar"
+          }
+        }
+      }
+    },
+    "Explore the World!" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Explora el mundo!"
+          }
+        }
+      }
+    },
+    "Favorites" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favoritos"
+          }
+        }
+      }
+    },
+    "Geographic Information" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Información Geográfica"
+          }
+        }
+      }
+    },
+    "Get ready to explore...." : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparate para explorar"
+          }
+        }
+      }
+    },
+    "My Favorites" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mis Favoritos"
+          }
+        }
+      }
+    },
+    "Region" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Región"
+          }
+        }
+      }
+    },
+    "Search a country" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Busca un país"
+          }
+        }
+      }
+    },
+    "What you need to know" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Que necesitas saber"
+          }
+        }
+      }
+    },
+    "Your Album is empty :(" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu álbum está vacío :("
+          }
+        }
+      }
+    },
+    "Your favorites will be here...when you select it :)" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aqui se mostraran tus favoritos… cuando selecciones unos :)"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.1"
+}

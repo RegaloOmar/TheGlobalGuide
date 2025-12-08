@@ -19,7 +19,7 @@ struct CountryRowDetailView: View {
                     
                     //MARK: - Image
                     FlagImageView(countryId: country.id, urlString: country.flags.png)
-                        .frame(height: 200)
+                        .frame(width: 350, height: 200)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                         .overlay {
                             RoundedRectangle(cornerRadius: 12)

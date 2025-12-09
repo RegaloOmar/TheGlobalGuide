@@ -6,7 +6,6 @@
 //
 
 import Foundation
-// Endpoint sugerido: https://restcountries.com/v3.1/all?fields=name,capital,flags,population,region,currencies,languages,timezones
 
 struct Country: Codable, Identifiable, Equatable {
     
@@ -31,7 +30,6 @@ struct Name: Codable, Equatable {
 
 struct Flags: Codable, Equatable {
     let png: String
-    let svg: String
 }
 
 struct Currency: Codable, Equatable {
@@ -44,7 +42,6 @@ extension Country {
     
     var commonName: String { name.common }
     var officialName: String { name.official }
-    var flagURL: URL? { URL(string: flags.png) }
     var capitalName: String { capital?.first ?? "N/A" }
     
     private static let populationFormatter: NumberFormatter = {

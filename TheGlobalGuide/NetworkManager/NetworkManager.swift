@@ -46,7 +46,7 @@ class NetworkManager: NetworkManagerProtocol {
         }
         
         components.queryItems = [
-            URLQueryItem(name: "fields", value: "name,capital,flags,population,region,currencies,languages,timezones,cca3")
+            URLQueryItem(name: "fields", value: "name,capital,flags,population,region,currencies,languages,timezones,cca3,latlng")
         ]
         
         guard let url = components.url else {

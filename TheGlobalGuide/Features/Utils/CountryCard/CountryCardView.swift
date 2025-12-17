@@ -36,7 +36,7 @@ struct CountryCardView: View {
                     Text(country.commonName)
                         .font(.headline)
                         .lineLimit(1)
-                        .fixedSize()
+                        .minimumScaleFactor(0.8)
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.primary)
                     
@@ -53,6 +53,7 @@ struct CountryCardView: View {
                     .foregroundStyle(.secondary)
             }
             .padding(12)
+            .background(Color(UIColor.secondarySystemGroupedBackground))
             
         }
         .toolbar(.hidden, for: .tabBar)

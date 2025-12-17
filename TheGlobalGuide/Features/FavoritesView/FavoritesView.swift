@@ -49,7 +49,6 @@ struct FavoritesView: View {
                     .padding()
                     .zIndex(1)
                 }
-                .background(Color(UIColor.secondarySystemGroupedBackground))
                 .navigationTitle(selectedCountry == nil ? "My Favorites" : "")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar(selectedCountry != nil ? .hidden : .visible, for: .tabBar)

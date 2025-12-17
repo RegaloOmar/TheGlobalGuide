@@ -48,6 +48,7 @@ struct ContentView: View {
 
 #Preview("English") {
     ContentView()
+        .environment(\.locale, .init(identifier: "en"))
 }
 
 #Preview("Español") {

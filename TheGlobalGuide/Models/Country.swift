@@ -21,6 +21,7 @@ struct Country: Codable, Identifiable, Equatable {
     let currencies: [String: Currency]?
     let languages: [String: String]?
     let timezones: [String]
+    let latlng: [Double]
 }
 
 struct Name: Codable, Equatable {

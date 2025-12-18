@@ -15,11 +15,37 @@ struct ExploreView: View {
         ZStack {
             switch viewModel.state {
                 case .error(let errorMessage):
-                    ContentUnavailableView("Connection Error",
-                                           systemImage: "wifi.exclamationmark",
-                                           description: Text(errorMessage))
+                ContentUnavailableView {
+                    Label("Connection Error", systemImage: "wifi.exclamationmark")
+                } description: {
+                    Text(errorMessage.capitalized)
+                } actions: {
+                    Button("Try Again") {
+                        Task {
+                            await viewModel.loadData()
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                
                 case .empty(let errorMessage):
                     ContentUnavailableView.search(text: errorMessage)
+                    .searchable(text: $viewModel.searchText, prompt: "Search a country")
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Menu {
+                                Picker("Region", selection: $viewModel.selectedRegion) {
+                                    Text("🗺️ All").tag(Region?.none)
+                                    ForEach(Region.allCases) { region in
+                                        Text("\(region.icon) \(region.rawValue)").tag(Optional(region))
+                                    }
+                                }
+                            } label: {
+                                Image(systemName: "line.3.horizontal.decrease.circle")
+                                    .symbolVariant(viewModel.selectedRegion != nil ? .fill : .none)
+                            }
+                        }
+                    }
                     
                 case .loaded, .entry:
                     List(viewModel.filteredCountries) { country in
@@ -31,22 +57,22 @@ struct ExploreView: View {
                         }
                     }
                     .listStyle(.plain)
-            }
-        }
-        .searchable(text: $viewModel.searchText, prompt: "Search a country")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    Picker("Region", selection: $viewModel.selectedRegion) {
-                        Text("🗺️ All").tag(Region?.none)
-                        ForEach(Region.allCases) { region in
-                            Text("\(region.icon) \(region.rawValue)").tag(Optional(region))
+                    .searchable(text: $viewModel.searchText, prompt: "Search a country")
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Menu {
+                                Picker("Region", selection: $viewModel.selectedRegion) {
+                                    Text("🗺️ All").tag(Region?.none)
+                                    ForEach(Region.allCases) { region in
+                                        Text("\(region.icon) \(region.rawValue)").tag(Optional(region))
+                                    }
+                                }
+                            } label: {
+                                Image(systemName: "line.3.horizontal.decrease.circle")
+                                    .symbolVariant(viewModel.selectedRegion != nil ? .fill : .none)
+                            }
                         }
                     }
-                } label: {
-                    Image(systemName: "line.3.horizontal.decrease.circle")
-                        .symbolVariant(viewModel.selectedRegion != nil ? .fill : .none)
-                }
             }
         }
     }

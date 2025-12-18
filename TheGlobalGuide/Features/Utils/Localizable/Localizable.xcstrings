@@ -140,6 +140,16 @@
         }
       }
     },
+    "Try Again" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
+          }
+        }
+      }
+    },
     "What you need to know" : {
       "localizations" : {
         "es-419" : {

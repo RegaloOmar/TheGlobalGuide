@@ -140,8 +140,8 @@ class CountryListViewModel: ObservableObject {
         
         if !text.isEmpty {
             result = result.filter {
-                $0.commonName.localizedCaseInsensitiveContains(text) ||
-                $0.officialName.localizedCaseInsensitiveContains(text)
+                $0.commonName.hasPrefix(text) ||
+                $0.officialName.hasPrefix(text)
             }
         }
         

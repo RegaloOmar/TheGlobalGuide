@@ -25,7 +25,6 @@ struct CountryCardView: View {
                         .stroke(Color.black ,lineWidth: 3)
                 }
                 .matchedGeometryEffect(id: "flag_\(country.id)", in: animation, isSource: isSource)
-                .transition(.hero)
                 .padding(.horizontal, 20)
                 .padding(.top)
             
@@ -36,7 +35,7 @@ struct CountryCardView: View {
                     Text(country.commonName)
                         .font(.headline)
                         .lineLimit(1)
-                        .fixedSize()
+                        .minimumScaleFactor(0.8)
                         .multilineTextAlignment(.leading)
                         .foregroundStyle(.primary)
                     
@@ -53,14 +52,13 @@ struct CountryCardView: View {
                     .foregroundStyle(.secondary)
             }
             .padding(12)
+            .background(Color(UIColor.secondarySystemGroupedBackground))
             
         }
         .toolbar(.hidden, for: .tabBar)
         .background(Color(UIColor.secondarySystemGroupedBackground))
         .cornerRadius(12)
-        .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
-        .matchedGeometryEffect(id: "container_\(country.id)", in: animation, isSource: isSource)
-        .transition(.hero)
+        .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)        
     }
 }
 

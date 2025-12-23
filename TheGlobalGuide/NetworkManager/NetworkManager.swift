@@ -7,14 +7,14 @@
 import Foundation
 
 enum NetworkError: Error, LocalizedError {
-    case invailURL
+    case invalidURL
     case serverError(statusCode: Int)
     case decodingError(Error)
     case unknown(Error)
     
     var errorDescription: String? {
         switch self {
-            case .invailURL: 
+            case .invalidURL: 
                 return "Invalid url."
             case .serverError(let code):
                 return "Server Error Code: \(code)"
@@ -42,15 +42,15 @@ class NetworkManager: NetworkManagerProtocol {
     func fetchCountries() async throws -> [Country] {
         
         guard var components = URLComponents(string: "\(baseURL)/all") else {
-            throw NetworkError.invailURL
+            throw NetworkError.invalidURL
         }
         
         components.queryItems = [
-            URLQueryItem(name: "fields", value: "name,capital,flags,population,region,currencies,languages,timezones,cca3")
+            URLQueryItem(name: "fields", value: "name,capital,flags,population,region,currencies,languages,timezones,cca3,latlng")
         ]
         
         guard let url = components.url else {
-            throw NetworkError.invailURL
+            throw NetworkError.invalidURL
         }
         
         
@@ -59,7 +59,7 @@ class NetworkManager: NetworkManagerProtocol {
     
     func getFlagImage(for urlString: String) async throws -> Data {
         guard let url = URL(string: urlString) else {
-            throw NetworkError.invailURL
+            throw NetworkError.invalidURL
         }
         
         do {

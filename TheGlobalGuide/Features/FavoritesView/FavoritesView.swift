@@ -39,7 +39,7 @@ struct FavoritesView: View {
                             }
                             .opacity(showDetail ? 0 : 1)
                             .onTapGesture {
-                                withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 1.0, blendDuration: 0.5)) {
+                                withAnimation {
                                     selectedCountry = country
                                     showDetail = true
                                 }
@@ -48,11 +48,12 @@ struct FavoritesView: View {
                     }
                     .padding()
                     .zIndex(1)
+                    .transition(.identity)
                 }
-                .background(Color(UIColor.secondarySystemGroupedBackground))
                 .navigationTitle(selectedCountry == nil ? "My Favorites" : "")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar(selectedCountry != nil ? .hidden : .visible, for: .tabBar)
+                
                 
             }
             
@@ -61,13 +62,15 @@ struct FavoritesView: View {
                     CountryCardDetailView(country: country,
                                       animation: animation,
                                       onClose: {
-                        withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 1.0, blendDuration: 0.5)) {
+                        withAnimation {
                             showDetail = false
                             selectedCountry = nil
                         }
                     })
+                    .ignoresSafeArea()
                 }
                 .zIndex(2)
+                .transition(.identity)
             }
         }
     }

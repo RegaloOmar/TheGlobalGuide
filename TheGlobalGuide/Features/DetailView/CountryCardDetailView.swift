@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CountryCardDetailView: View {
     let country: Country
-    @StateObject var viewModel = CountryDetailViewModel()
     @State private var showContent = false
     var animation: Namespace.ID
     var onClose: () -> Void
@@ -20,38 +19,30 @@ struct CountryCardDetailView: View {
         VStack {
             ScrollView {
                 VStack(spacing: 24) {
-                    VStack(spacing: 16) {
+                    //MARK: - Image & Name
+                    FlagImageView(countryId: country.id, urlString: country.flags.png)
+                        .frame(height: 200)
+                        .frame(maxWidth: .infinity)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .matchedGeometryEffect(id: "flag_\(country.id)", in: animation)
+                        .padding(.bottom, 20)
+                    
+                    VStack(spacing: 4) {
+                        Text(country.commonName)
+                            .font(.largeTitle)
+                            .bold()
+                            .opacity(showContent ? 1 : 0)
+                            .offset(y: showContent ? 0 : 20)
+                            .multilineTextAlignment(.center)
                         
-                        // Image
-                        FlagImageView(countryId: country.id, urlString: country.flags.png)
-                            .frame(width: 350, height: 200)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.black ,lineWidth: 3)
-                            }
-                            .padding(.horizontal, 20)
-                            .padding(.top)
-                            .matchedGeometryEffect(id: "flag_\(country.id)", in: animation)
-                            .transition(.hero)
-                        
-                        VStack(spacing: 4) {
-                            Text(country.commonName)
-                                .font(.largeTitle)
-                                .bold()
-                                .opacity(showContent ? 1 : 0)
-                                .offset(y: showContent ? 0 : 20)
-                                .multilineTextAlignment(.center)
-                            
-                            Text(country.officialName)
-                                .font(.largeTitle)
-                                .foregroundStyle(.secondary)
-                                .opacity(showContent ? 1 : 0)
-                                .offset(y: showContent ? 0 : 20)
-                                .multilineTextAlignment(.center)
-                        }
-                        .padding(.horizontal)
+                        Text(country.officialName)
+                            .font(.largeTitle)
+                            .foregroundStyle(.secondary)
+                            .opacity(showContent ? 1 : 0)
+                            .offset(y: showContent ? 0 : 20)
+                            .multilineTextAlignment(.center)
                     }
+                    .padding(.horizontal)
                     
                     //MARK: - What you need to know section
                     VStack(alignment: .leading, spacing: 16) {
@@ -69,7 +60,6 @@ struct CountryCardDetailView: View {
                             Divider().padding(.leading, 44)
                             DetailRow(icon: "clock", title: "Time Zone", value: country.timezones.first ?? "N/A")
                         }
-                        .background(Color(UIColor.secondarySystemGroupedBackground))
                         .cornerRadius(12)
                         .opacity(showContent ? 1 : 0)
                         .offset(y: showContent ? 0 : 20)
@@ -91,16 +81,46 @@ struct CountryCardDetailView: View {
                             Divider().padding(.leading, 44)
                             DetailRow(icon: "person.3", title: "Population", value: country.populationFormatted)
                         }
-                        .background(Color(UIColor.secondarySystemGroupedBackground))
                         .cornerRadius(12)
                         .opacity(showContent ? 1 : 0)
                         .offset(y: showContent ? 0 : 20)
                         .padding(.horizontal)
                     }
+                    
+                    //MARK: - MapView
+                    VStack(alignment: .leading, spacing: 16) {
+                        
+                        Text("Location")
+                            .font(.title3)
+                            .bold()
+                        
+                        if !country.latlng.isEmpty {
+                            
+                            CountryMapView(name: country.commonName, latlng: country.latlng)
+                                .frame(height: 250)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                                .padding(.horizontal)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(Color.indigo, lineWidth: 2)
+                                        .padding(.horizontal)
+                                }
+                        } else {
+                            Text("Location data not available")
+                                .italic()
+                                .foregroundColor(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .padding()
+                        }
+                    }
+                    .cornerRadius(12)
+                    .opacity(showContent ? 1 : 0)
+                    .offset(y: showContent ? 0 : 20)
+                    .padding(.horizontal)
                 }
                 .padding(.bottom, 40)
             }
-            .background(Color(UIColor.secondarySystemGroupedBackground))
+            .background(Color(UIColor.secondarySystemBackground))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     GlassEffectContainer {
@@ -115,12 +135,11 @@ struct CountryCardDetailView: View {
                 }
             }
         }
-        .task(id: country.flags.png) {
-            await viewModel.fetchImage(imageURL: country.flags.png)
-            showContent = true
+        .onAppear {
+            withAnimation(.easeInOut(duration: 0.3).delay(0.2)) {
+                showContent = true
+            }
         }
-        .matchedGeometryEffect(id: "container_\(country.id)", in: animation)
-        .transition(.scale)
     }
 }
 

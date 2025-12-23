@@ -90,6 +90,26 @@
         }
       }
     },
+    "Location" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Localización"
+          }
+        }
+      }
+    },
+    "Location data not available" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay datos de localización"
+          }
+        }
+      }
+    },
     "My Favorites" : {
       "localizations" : {
         "es-419" : {
@@ -116,6 +136,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Busca un país"
+          }
+        }
+      }
+    },
+    "Try Again" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
           }
         }
       }

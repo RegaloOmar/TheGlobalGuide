@@ -78,6 +78,34 @@ struct CountryRowDetailView: View {
                     .cornerRadius(12)
                     .padding(.horizontal)
                 }
+                
+                //MARK: - MapView
+                VStack(alignment: .leading) {
+                    
+                    Text("Location")
+                        .font(.title3)
+                        .bold()
+                        .padding(.horizontal)
+                    
+                    if !country.latlng.isEmpty {
+                        
+                        CountryMapView(name: country.commonName, latlng: country.latlng)
+                            .frame(height: 250)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .padding(.horizontal)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.black, lineWidth: 2)
+                                    .padding(.horizontal)
+                            }
+                    } else {
+                        Text("Location data not available")
+                            .italic()
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding()
+                    }
+                }
             }
             .padding(.bottom, 40)
         }

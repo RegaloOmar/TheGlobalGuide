@@ -42,9 +42,9 @@ class CountryListViewModel: ObservableObject {
     
     // MARK: - Dependencies
     private let networkManager: NetworkManagerProtocol
+    private let persistenceManager: PersistenceManagerProtocol
     
     //MARK: - Persistence
-    private let fileManager = FileManager.default
     private let favoritesKey = "saved_favorites_ids"
     @Published var favoriteCountries: [Country] = [] {
         didSet {
@@ -66,8 +66,10 @@ class CountryListViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Init
-    init(networkManager: NetworkManagerProtocol = NetworkManager()) {
+    init(networkManager: NetworkManagerProtocol = NetworkManager(),
+         persistenceManager: PersistenceManagerProtocol? = nil ) {
         self.networkManager = networkManager
+        self.persistenceManager = persistenceManager ?? PersistenceManager()
         loadFavorites()
         setupSearchPipeline()
     }
@@ -110,11 +112,11 @@ class CountryListViewModel: ObservableObject {
     //MARK: - Persistence Funcitons
     
     private func saveFavorites() {
-        PersistenceManager.save(favoriteCountries, key: favoritesKey)
+        persistenceManager.save(favoriteCountries, key: favoritesKey)
     }
     
     private func loadFavorites() {
-        if let savedCountries = PersistenceManager.load(key: favoritesKey, as: [Country].self) {
+        if let savedCountries = persistenceManager.load(key: favoritesKey, as: [Country].self) {
             self.favoriteCountries = savedCountries
         } else {
             self.favoriteCountries = []

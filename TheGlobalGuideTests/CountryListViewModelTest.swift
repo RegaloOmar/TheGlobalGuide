@@ -10,7 +10,7 @@ import Combine
 @testable import TheGlobalGuide
 
 @MainActor
-class CountryListViewModelTests: XCTestCase {
+final class CountryListViewModelTests: XCTestCase {
     
     var viewModel: CountryListViewModel!
     var mockNetwork: MockNetworkManager!

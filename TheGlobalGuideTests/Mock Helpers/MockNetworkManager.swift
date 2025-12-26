@@ -9,9 +9,10 @@ import UIKit
 @testable import TheGlobalGuide
 
 @MainActor
-class MockNetworkManager: NetworkManagerProtocol {
+final class MockNetworkManager: NetworkManagerProtocol {
     var shouldReturnError = false
     var mockCountries: [Country] = []
+    var mockFlagData: Data?
     
     func fetchCountries() async throws -> [Country] {
         if shouldReturnError {
@@ -24,6 +25,6 @@ class MockNetworkManager: NetworkManagerProtocol {
         if shouldReturnError {
             throw NetworkError.invalidURL
         }
-        return Data()
+        return mockFlagData ?? Data()
     }
 }

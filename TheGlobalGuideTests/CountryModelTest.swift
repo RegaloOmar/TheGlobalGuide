@@ -8,7 +8,7 @@
 import XCTest
 @testable import TheGlobalGuide
 
-class CountryModelTest: XCTestCase {
+final class CountryModelTest: XCTestCase {
 
     func testPopulationFormatted() {
         let country = Country.mock(id: "SWE", name: "Sweden", region: "Europe", population: 1235869)

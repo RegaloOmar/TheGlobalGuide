@@ -8,7 +8,7 @@ import Foundation
 @testable import TheGlobalGuide
 
 @MainActor
-class MockPersistenceManager: PersistenceManagerProtocol {
+final class MockPersistenceManager: PersistenceManagerProtocol {
     
     var mockLoadResult: Any?
     var saveCalled = false

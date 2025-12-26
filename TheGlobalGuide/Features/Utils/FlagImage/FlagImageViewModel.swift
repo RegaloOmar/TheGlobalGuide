@@ -11,73 +11,40 @@ import Combine
 
 class FlagImageViewModel: ObservableObject {
     
-    let networkManager: NetworkManagerProtocol
-    private let fileManager = FileManager.default
+    private let networkManager: NetworkManagerProtocol
+    private let imageCache: ImageCacheManagerProtocol
     
     @Published var image: UIImage?
     @Published var isLoading: Bool = false
     
-    init(networkManager: NetworkManagerProtocol = NetworkManager()) {
+    init(networkManager: NetworkManagerProtocol = NetworkManager(),
+         imageCache: ImageCacheManagerProtocol = ImageCacheManager()) {
         self.networkManager = networkManager
+        self.imageCache = imageCache
     }
     
     func loadImage(from urlString: String?, countryId: String) async {
-        
         guard let urlString = urlString else { return }
         
         guard image == nil else { return }
         
-        if let localImg = loadLocalImage(countryId: countryId) {
-            await MainActor.run {
-                self.image = localImg
-            }
+        if let cachedData = imageCache.load(id: countryId),
+           let cachedImage = UIImage(data: cachedData) {
+            self.image = cachedImage
             return
         }
         
-        await MainActor.run {
-            isLoading = true
-        }
-        defer { Task { await MainActor.run { isLoading = false }}}
+        isLoading = true
+        defer { isLoading = false }
         
         do {
             let data = try await networkManager.getFlagImage(for: urlString)
             if let uiImage = UIImage(data: data) {
-                
-                saveImageLocally(data: data, countryId: countryId)
-                
-                await MainActor.run {
-                    self.image = uiImage
-                }
+                imageCache.save(data: data, id: countryId)
+                self.image = uiImage
             }
         } catch {
-            await MainActor.run {
-                self.image = UIImage(systemName: "flag.slash.fill")
-            }
-        }
-    }
-    
-    // MARK: - Local save
-        
-    private func getDocumentsDirectory() -> URL {
-        return fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    }
-    
-    private func loadLocalImage(countryId: String) -> UIImage? {
-        let fileURL = getDocumentsDirectory().appendingPathComponent("\(countryId)_flag.png")
-        
-        if fileManager.fileExists(atPath: fileURL.path) {
-            return UIImage(contentsOfFile: fileURL.path)
-        }
-        return nil
-    }
-    
-    private func saveImageLocally(data: Data, countryId: String) {
-        let fileURL = getDocumentsDirectory().appendingPathComponent("\(countryId)_flag.png")
-        
-        do {
-            try data.write(to: fileURL)
-        } catch {
-            print("Error guardando imagen localmente: \(error)")
+            self.image = UIImage(systemName: "flag.slash.fill")
         }
     }
 }

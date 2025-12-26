@@ -42,15 +42,11 @@ class CountryListViewModel: ObservableObject {
     
     // MARK: - Dependencies
     private let networkManager: NetworkManagerProtocol
+    private let persistenceManager: PersistenceManagerProtocol
     
     //MARK: - Persistence
-    private let fileManager = FileManager.default
     private let favoritesKey = "saved_favorites_ids"
-    @Published var favoriteCountries: [Country] = [] {
-        didSet {
-            saveFavorites()
-        }
-    }
+    @Published var favoriteCountries: [Country] = []
     
     // MARK: - Published Properties
     @Published var state: ViewState = .entry
@@ -66,8 +62,10 @@ class CountryListViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Init
-    init(networkManager: NetworkManagerProtocol = NetworkManager()) {
+    init(networkManager: NetworkManagerProtocol = NetworkManager(),
+         persistenceManager: PersistenceManagerProtocol? = nil ) {
         self.networkManager = networkManager
+        self.persistenceManager = persistenceManager ?? PersistenceManager()
         loadFavorites()
         setupSearchPipeline()
     }
@@ -77,8 +75,6 @@ class CountryListViewModel: ObservableObject {
     func loadData() async {
         guard allCountries.isEmpty else { return }
         isLoading.toggle()
-        
-        try? await Task.sleep(for: .seconds(4))
         
         defer { isLoading .toggle() }
         
@@ -97,10 +93,10 @@ class CountryListViewModel: ObservableObject {
     func toggleFavorite(_ country: Country) {
         if let index = favoriteCountries.firstIndex(where: { $0.id == country.id }) {
             favoriteCountries.remove(at: index)
-            
         } else {
             favoriteCountries.append(country)
         }
+        saveFavorites()
     }
     
     func isFavorite(_ country: Country) -> Bool {
@@ -110,11 +106,11 @@ class CountryListViewModel: ObservableObject {
     //MARK: - Persistence Funcitons
     
     private func saveFavorites() {
-        PersistenceManager.save(favoriteCountries, key: favoritesKey)
+        persistenceManager.save(favoriteCountries, key: favoritesKey)
     }
     
     private func loadFavorites() {
-        if let savedCountries = PersistenceManager.load(key: favoritesKey, as: [Country].self) {
+        if let savedCountries = persistenceManager.load(key: favoritesKey, as: [Country].self) {
             self.favoriteCountries = savedCountries
         } else {
             self.favoriteCountries = []

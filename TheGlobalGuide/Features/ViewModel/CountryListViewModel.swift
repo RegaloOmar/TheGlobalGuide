@@ -46,11 +46,7 @@ class CountryListViewModel: ObservableObject {
     
     //MARK: - Persistence
     private let favoritesKey = "saved_favorites_ids"
-    @Published var favoriteCountries: [Country] = [] {
-        didSet {
-            saveFavorites()
-        }
-    }
+    @Published var favoriteCountries: [Country] = []
     
     // MARK: - Published Properties
     @Published var state: ViewState = .entry
@@ -80,8 +76,6 @@ class CountryListViewModel: ObservableObject {
         guard allCountries.isEmpty else { return }
         isLoading.toggle()
         
-        try? await Task.sleep(for: .seconds(4))
-        
         defer { isLoading .toggle() }
         
         do {
@@ -99,10 +93,10 @@ class CountryListViewModel: ObservableObject {
     func toggleFavorite(_ country: Country) {
         if let index = favoriteCountries.firstIndex(where: { $0.id == country.id }) {
             favoriteCountries.remove(at: index)
-            
         } else {
             favoriteCountries.append(country)
         }
+        saveFavorites()
     }
     
     func isFavorite(_ country: Country) -> Bool {
